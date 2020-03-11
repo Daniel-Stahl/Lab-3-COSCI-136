@@ -6,22 +6,65 @@
 //  Copyright © 2020 Daniel Stahl. All rights reserved.
 //
 
+// Check for heap
+
 #include "AddressBook.hpp"
+#include <fstream>
+#include <iostream>
 
-AddressBook::AddressBook(){};
-
-AddressBook::AddressBook(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber) {
-    SetFirstName(newFirstName); SetLastName(newLastName); SetAddress(newAddress); SetPhoneNumber(newPhoneNumber);
+void AddressBook::LoadData() {
+    ifstream inFile;
+    string firstName;
+    string lastName;
+    string phoneNumber;
+    string streetNumber;
+    string streetName;
+    string city;
+    string state;
+    string zipcode;
+    Record* node;
+    
+    inFile.open("/Users/stahl/Desktop/Pierce College/COSCI 136/LAB_3_STAHL_DANIEL/data.txt");
+    
+    if (!inFile) {
+        cout << "File doesn't exist" << endl;
+        exit(1);
+    } else {
+        cout << "File loaded" << endl;
+    }
+    
+    inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
+    
+    head = new Record;
+    head->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+    node = head;
+    
+    while (!inFile.eof()) {
+        node->next = new Record;
+        node = node->next;
+        
+        inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
+        
+        node->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+        
+    }
 };
 
-//Getters
-string AddressBook::GetFirstName() const { return firstName; };
-string AddressBook::GetLastName() const { return lastName; };
-Address AddressBook::GetAddress() const { return address; };
-string AddressBook::GetPhoneNumber() const { return phoneNumber; };
+void AddressBook::SearchContacts(string _SearchFor_) {
+    Record* node;
+    node = head;
+    bool exitSearch = false;
+    
+    while (node->next != NULL || !exitSearch) {
+        if (node->contact.GetLastName() == _SearchFor_ || node->contact.GetPhoneNumber() == _SearchFor_) {
+            node->contact.Print();
+            exitSearch = true;
+        } else {
+            node = node->next;
+        }
+    }
+};
 
-// Setters
-void AddressBook::SetFirstName(string _FirstName_) { firstName = _FirstName_; };
-void AddressBook::SetLastName(string _LastName_) { lastName = _LastName_; };
-void AddressBook::SetAddress(Address _Address_) { address = _Address_; };
-void AddressBook::SetPhoneNumber(string _PhoneNumber_) { phoneNumber = _PhoneNumber_; };
+void AddressBook::PrintContact() {
+    head->contact.Print();
+}

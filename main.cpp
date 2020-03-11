@@ -2,10 +2,16 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
+#include "AddressBook.hpp"
 
 using namespace std;
 
 int main() {
+    AddressBook addressBook;
+    addressBook.LoadData();
+    
+    addressBook.SearchContacts("Stahl");
     
 }
 

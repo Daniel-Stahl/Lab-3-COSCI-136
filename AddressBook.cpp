@@ -11,6 +11,7 @@
 #include "AddressBook.hpp"
 #include <fstream>
 #include <iostream>
+#include <new>
 
 void AddressBook::LoadData() {
     ifstream inFile;
@@ -38,15 +39,21 @@ void AddressBook::LoadData() {
     head = new Record;
     head->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
     node = head;
+    head->next = nullptr;
     
     while (!inFile.eof()) {
-        node->next = new Record;
-        node = node->next;
+        node->next = new (std::nothrow) Record;
         
-        inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
+        if (!node) {
+            cout << "Cant allocate memory\n";
+        } else {
+            node = node->next;
+            inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
         
-        node->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-        
+            node->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+            
+            node->next = nullptr;
+        }
     }
 };
 
@@ -55,7 +62,7 @@ void AddressBook::SearchContacts(string _SearchFor_) {
     node = head;
     bool exitSearch = false;
     
-    while (node->next != NULL || !exitSearch) {
+    while (node != nullptr && !exitSearch) {
         if (node->contact.GetLastName() == _SearchFor_ || node->contact.GetPhoneNumber() == _SearchFor_) {
             node->contact.Print();
             exitSearch = true;

@@ -6,13 +6,43 @@
 #include "AddressBook.hpp"
 
 using namespace std;
+void PromptMenu();
 
 int main() {
+    PromptMenu();
+}
+
+void PromptMenu() {
     AddressBook addressBook;
+    int userChoice;
+    
     addressBook.LoadData();
     
-    addressBook.SearchContacts("Stahl");
-    
+    do {
+        cout << "Main menu: \n";
+        cout << "1) Search for contact\n" << "2) Add a new contact\n" << "3) Delete contact\n" << "4) Exit program\n";
+        cout << "Please select an option: ";
+        cin >> userChoice;
+        
+        if (!cin) {
+            cin.clear();
+            cin.ignore(100, '\n');
+            cout << "That is not a valid choice, please try again\n";
+        } else {
+            switch (userChoice) {
+                case 1:
+                    // Search for contact
+                    addressBook.SearchContacts("Stahl");
+                    break;
+                case 2:
+                    // Add new contact
+                    break;
+                case 3:
+                    // Delete contact
+                    break;
+            }
+        }
+    } while (userChoice != 4);
 }
 
 /*

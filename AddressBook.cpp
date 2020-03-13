@@ -53,20 +53,24 @@ void AddressBook::LoadData() {
             inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
             MakeUppercase(firstName, lastName, streetName, city, state);
             node->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-            node->contact.Print();
             node->next = nullptr;
         }
     }
 }
 
-void AddressBook::SearchContacts(string _SearchFor_) {
+void AddressBook::SearchContacts() {
     Record* node;
     node = head;
+    string searchContact;
     bool exitSearch = false;
     
+    cout << "Which contact do you want to search? ";
+    cin >> searchContact;
+    
     while (node != nullptr && !exitSearch) {
-        if (node->contact.GetLastName() == _SearchFor_ || node->contact.GetPhoneNumber() == _SearchFor_) {
+        if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
             node->contact.Print();
+            found = node;
             exitSearch = true;
         } else {
             node = node->next;
@@ -113,12 +117,50 @@ void AddressBook::AddContact() {
             MakeUppercase(firstName, lastName, streetName, city, state);
             newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
             newHead->next = head;
-            newHead->contact.Print();
             
             cout << "Do you want to add another contact?\n";
             cin >> userChoice;
+            // Check if user choice is valid
         }
-    } while (userChoice != 'n');
+    } while (userChoice != 'n' || userChoice != 'N');
+}
+
+// Delete contact
+void AddressBook::DeleteContact() {
+    Record* prev = head;
+    Record* node = head->next;
+    char answer;
+    //string searchContact;
+    char exitMenu;
+    
+    do {
+        
+        SearchContacts();
+        
+        if (found) {
+            cout << "Will be deleted, are you sure (Y/N)? ";
+            cin >> answer;
+        } else {
+            cout << "Not found";
+        }
+        
+        if (answer == 'y' || answer == 'Y') {
+            cout << "Deleted\n";
+            
+            cout << "Want to delete another (Y/N)? ";
+            cin >> exitMenu;
+        } else if (answer == 'n' || answer == 'N') {
+            cout << "Not deleted\n";
+            cout << "Exit menu (Y/N)? ";
+            cin >> exitMenu;
+        } else if (!found) {
+            cout << "Want to try again (Y/N)? ";
+            cin >> exitMenu;
+        }
+        
+        
+        
+    } while (exitMenu == 'y' || exitMenu == 'Y');
 }
 
 void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) { // Makes strings uppercase
@@ -130,8 +172,14 @@ void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, st
         
         for (int x = 0; x < stringSize; x++) {
             arrayOfStrings[count][x] = toupper(arrayOfStrings[count][x]);
-            cout << arrayOfStrings[count][x] << endl;
         }
+    
         count++;
     }
+    
+    changeStringA = arrayOfStrings[0];
+    changeStringB = arrayOfStrings[1];
+    changeStringC = arrayOfStrings[2];
+    changeStringD = arrayOfStrings[3];
+    changeStringE = arrayOfStrings[4];
 }

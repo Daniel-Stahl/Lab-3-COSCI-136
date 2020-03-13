@@ -35,7 +35,7 @@ void PromptMenu() {
             switch (userChoice) {
                 case 1:
                     // Search for contact
-                    addressBook.SearchContacts("Stahl");
+                    addressBook.SearchContacts();
                     break;
                 case 2:
                     // Add new contact
@@ -43,6 +43,7 @@ void PromptMenu() {
                     break;
                 case 3:
                     // Delete contact
+                    addressBook.DeleteContact();
                     break;
             }
         }

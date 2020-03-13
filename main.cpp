@@ -36,6 +36,7 @@ void PromptMenu() {
                     break;
                 case 2:
                     // Add new contact
+                    addressBook.AddContact();
                     break;
                 case 3:
                     // Delete contact

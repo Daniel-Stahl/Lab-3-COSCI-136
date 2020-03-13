@@ -16,5 +16,6 @@ public:
     
     void LoadData();
     void SearchContacts(string _SearchFor_);
-    void PrintContact();
+    void AddContact();
+
 };

@@ -55,7 +55,7 @@ void AddressBook::LoadData() {
             node->next = nullptr;
         }
     }
-};
+}
 
 void AddressBook::SearchContacts(string _SearchFor_) {
     Record* node;
@@ -70,8 +70,49 @@ void AddressBook::SearchContacts(string _SearchFor_) {
             node = node->next;
         }
     }
-};
+}
 
-void AddressBook::PrintContact() {
-    head->contact.Print();
+void AddressBook::AddContact() {
+    Record* newHead;
+    char userChoice;
+    string firstName, lastName, streetNumber, streetName, city, state, zipcode, phoneNumber;
+    
+    do {
+        newHead = new (std::nothrow) Record;
+        
+        if (!newHead) {
+            cout << "No more space to allocate memory\n";
+        } else {
+        
+            cout << "First Name: ";
+            cin >> firstName;
+            
+            cout << "Last Name: ";
+            cin >> lastName;
+            
+            cout << "Street Number: ";
+            cin >> streetNumber;
+            
+            cout << "Street Name: ";
+            cin >> streetName;
+            
+            cout << "City: ";
+            cin >> city;
+            
+            cout << "State: ";
+            cin >> state;
+            
+            cout << "Zipcode: ";
+            cin >> zipcode;
+            
+            cout << "Phone Number: ";
+            cin >> phoneNumber;
+            
+            newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+            newHead->next = head;
+            
+            cout << "Do you want to add another contact?\n";
+            cin >> userChoice;
+        }
+    } while (userChoice != 'n');
 }

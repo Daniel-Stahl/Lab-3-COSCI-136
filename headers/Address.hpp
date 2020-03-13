@@ -13,6 +13,11 @@ class Address {
 public:
     Address();
     Address(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode);
+    string GetStreetNum();
+    string GetStreetName();
+    string GetCity();
+    string GetState();
+    string GetZipcode();
 
 private:
     string streetNumber;

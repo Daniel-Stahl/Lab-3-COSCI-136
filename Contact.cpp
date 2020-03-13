@@ -7,6 +7,7 @@
 //
 
 #include "Contact.hpp"
+
 #include <iostream>
 
 using namespace std;
@@ -20,5 +21,6 @@ string Contact::GetLastName() { return lastName; };
 string Contact::GetPhoneNumber() { return phoneNumber; };
 
 void Contact::Print() {
-    cout << "Name: " << firstName << " " << lastName << endl;
+    //Address address;
+    cout << "Name: " << firstName << " " << lastName << "\n" << "Adddress: " << address.GetStreetNum() << " " << address.GetStreetName() << " " << address.GetCity() << ", " << address.GetState() << " " << address.GetZipcode() << "\n";
 }

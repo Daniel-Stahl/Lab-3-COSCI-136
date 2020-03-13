@@ -11,6 +11,7 @@
 #include "AddressBook.hpp"
 #include <fstream>
 #include <iostream>
+#include <array>
 #include <new>
 
 void AddressBook::LoadData() {
@@ -35,6 +36,7 @@ void AddressBook::LoadData() {
     }
     
     inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
+    MakeUppercase(firstName, lastName, streetName, city, state);
     
     head = new Record;
     head->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
@@ -49,9 +51,9 @@ void AddressBook::LoadData() {
         } else {
             node = node->next;
             inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
-        
+            MakeUppercase(firstName, lastName, streetName, city, state);
             node->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-            
+            node->contact.Print();
             node->next = nullptr;
         }
     }
@@ -108,11 +110,28 @@ void AddressBook::AddContact() {
             cout << "Phone Number: ";
             cin >> phoneNumber;
             
+            MakeUppercase(firstName, lastName, streetName, city, state);
             newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
             newHead->next = head;
+            newHead->contact.Print();
             
             cout << "Do you want to add another contact?\n";
             cin >> userChoice;
         }
     } while (userChoice != 'n');
+}
+
+void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) { // Makes strings uppercase
+    string arrayOfStrings[5] = {changeStringA, changeStringB, changeStringC, changeStringD, changeStringE};
+    int count = 0;
+    
+    while (count < 5) {
+        unsigned stringSize = arrayOfStrings[count].size();
+        
+        for (int x = 0; x < stringSize; x++) {
+            arrayOfStrings[count][x] = toupper(arrayOfStrings[count][x]);
+            cout << arrayOfStrings[count][x] << endl;
+        }
+        count++;
+    }
 }

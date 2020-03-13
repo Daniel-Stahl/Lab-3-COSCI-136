@@ -17,5 +17,6 @@ public:
     void LoadData();
     void SearchContacts(string _SearchFor_);
     void AddContact();
+    void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);
 
 };

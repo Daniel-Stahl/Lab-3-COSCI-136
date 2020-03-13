@@ -3,10 +3,13 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cctype>
 #include "AddressBook.hpp"
 
 using namespace std;
+
 void PromptMenu();
+
 
 int main() {
     PromptMenu();

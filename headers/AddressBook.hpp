@@ -13,10 +13,9 @@ using namespace std;
 class AddressBook {
 public:
     Record* head;
-    Record* found;
     
     void LoadData();
-    void SearchContacts();
+    Record* SearchContacts();
     void AddContact();
     void DeleteContact();
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);

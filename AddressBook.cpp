@@ -58,24 +58,33 @@ void AddressBook::LoadData() {
     }
 }
 
-void AddressBook::SearchContacts() {
-    Record* node;
-    node = head;
+Record* AddressBook::SearchContacts() {
+    Record *node = head;
+    Record *prev = head;
     string searchContact;
     bool exitSearch = false;
-    
+
     cout << "Which contact do you want to search? ";
     cin >> searchContact;
     
     while (node != nullptr && !exitSearch) {
         if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
             node->contact.Print();
-            found = node;
             exitSearch = true;
         } else {
+            prev = node;
             node = node->next;
         }
     }
+    
+    
+    
+    if (node == prev) {
+        return nullptr;
+    } else {
+        return prev;
+    }
+    
 }
 
 void AddressBook::AddContact() {
@@ -127,40 +136,21 @@ void AddressBook::AddContact() {
 
 // Delete contact
 void AddressBook::DeleteContact() {
-    Record* prev = head;
-    Record* node = head->next;
-    char answer;
-    //string searchContact;
-    char exitMenu;
+    Record* oldHead = head;
+    Record* prev;
+    Record* newHead;
     
-    do {
-        
-        SearchContacts();
-        
-        if (found) {
-            cout << "Will be deleted, are you sure (Y/N)? ";
-            cin >> answer;
-        } else {
-            cout << "Not found";
-        }
-        
-        if (answer == 'y' || answer == 'Y') {
-            cout << "Deleted\n";
-            
-            cout << "Want to delete another (Y/N)? ";
-            cin >> exitMenu;
-        } else if (answer == 'n' || answer == 'N') {
-            cout << "Not deleted\n";
-            cout << "Exit menu (Y/N)? ";
-            cin >> exitMenu;
-        } else if (!found) {
-            cout << "Want to try again (Y/N)? ";
-            cin >> exitMenu;
-        }
-        
-        
-        
-    } while (exitMenu == 'y' || exitMenu == 'Y');
+    prev = SearchContacts();
+
+    if (!prev) {
+        //Delete Head
+        oldHead->contact.Print();
+        newHead = head->next;
+        delete oldHead;
+    } else {
+        prev->next = prev->next->next;
+        delete prev->next;
+    }
 }
 
 void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) { // Makes strings uppercase

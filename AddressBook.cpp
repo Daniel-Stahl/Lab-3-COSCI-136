@@ -14,6 +14,8 @@
 #include <array>
 #include <new>
 
+Record* testRecord;
+
 void AddressBook::LoadData() {
     ifstream inFile;
     string firstName;
@@ -58,33 +60,56 @@ void AddressBook::LoadData() {
     }
 }
 
-Record* AddressBook::SearchContacts() {
-    Record *node = head;
-    Record *prev = head;
+bool AddressBook::SearchContacts() {
     string searchContact;
+    char searchAgain;
     bool exitSearch = false;
-
-    cout << "Which contact do you want to search? ";
-    cin >> searchContact;
     
-    while (node != nullptr && !exitSearch) {
-        if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
-            node->contact.Print();
-            exitSearch = true;
-        } else {
-            prev = node;
-            node = node->next;
+    do {
+        cout << "Search by last name or phone number: ";
+        cin >> searchContact;
+        
+        // Function to make user input lowercase
+        
+        Record *node = head;
+        Record *prev = head;
+        
+        while (node != nullptr && !exitSearch) {
+            if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
+                node->contact.Print();
+                exitSearch = true;
+            } else {
+                prev = node;
+                node = node->next;
+                exitSearch = false;
+            }
         }
-    }
+        
+        if (node == prev) {
+            testRecord = nullptr;
+        } else {
+            testRecord = prev;
+        }
+        
+        if (node != nullptr) {
+            cout << "Found contact\n";
+            cout << "Search again (Y/N)? ";
+            cin >> searchAgain;
+        } else {
+            cout << "Contact not found\n";
+            cout << "Search again (Y/N)? ";
+            cin >> searchAgain;
+        }
+        
+        searchAgain = toupper(searchAgain);
+        
+        if (searchAgain == 'Y') {
+            exitSearch = false;
+        }
+        
+    } while (searchAgain == 'Y');
     
-    
-    
-    if (node == prev) {
-        return nullptr;
-    } else {
-        return prev;
-    }
-    
+    return exitSearch;
 }
 
 void AddressBook::AddContact() {
@@ -137,23 +162,30 @@ void AddressBook::AddContact() {
 // Delete contact
 void AddressBook::DeleteContact() {
     Record* oldHead = head;
-    Record* prev;
-    Record* newHead;
+    bool foundContact = false;
+    char deleteAnother;
     
-    prev = SearchContacts();
-
-    if (!prev) {
-        //Delete Head
-        oldHead->contact.Print();
-        newHead = head->next;
-        delete oldHead;
-    } else {
-        prev->next = prev->next->next;
-        delete prev->next;
-    }
+    do {
+        foundContact = SearchContacts();
+        
+        if (foundContact) {
+            if (!testRecord) {
+                //Delete Head
+                oldHead->contact.Print();
+                head = oldHead->next;
+                delete oldHead;
+            } else {
+                testRecord->next = testRecord->next->next;
+                delete testRecord->next;
+            }
+            
+            cout << "Want to delete another (Y/N)? ";
+            cin >> deleteAnother;
+        }
+    } while (deleteAnother == 'Y');
 }
 
-void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) { // Makes strings uppercase
+void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) {
     string arrayOfStrings[5] = {changeStringA, changeStringB, changeStringC, changeStringD, changeStringE};
     int count = 0;
     

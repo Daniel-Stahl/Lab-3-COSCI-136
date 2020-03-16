@@ -15,7 +15,7 @@ public:
     Record* head;
     
     void LoadData();
-    Record* SearchContacts();
+    bool SearchContacts();
     void AddContact();
     void DeleteContact();
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);

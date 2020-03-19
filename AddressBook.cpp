@@ -14,7 +14,7 @@
 #include <array>
 #include <new>
 
-Record* testRecord;
+Record* newRecord;
 
 void AddressBook::LoadData() {
     ifstream inFile;
@@ -60,7 +60,7 @@ void AddressBook::LoadData() {
     }
 }
 
-bool AddressBook::SearchContacts() {
+bool AddressBook::SearchContacts() { // Let user go back to menu if accidently selected wrong menu
     string searchContact;
     char searchAgain;
     bool exitSearch = false;
@@ -86,9 +86,9 @@ bool AddressBook::SearchContacts() {
         }
         
         if (node == prev) {
-            testRecord = nullptr;
+            newRecord = nullptr;
         } else {
-            testRecord = prev;
+            newRecord = prev;
         }
         
         if (node != nullptr) {
@@ -101,7 +101,7 @@ bool AddressBook::SearchContacts() {
             cin >> searchAgain;
         }
         
-        searchAgain = toupper(searchAgain);
+        searchAgain = toupper(searchAgain); // Make a function
         
         if (searchAgain == 'Y') {
             exitSearch = false;
@@ -151,12 +151,13 @@ void AddressBook::AddContact() {
             MakeUppercase(firstName, lastName, streetName, city, state);
             newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
             newHead->next = head;
+            head = newHead;
             
-            cout << "Do you want to add another contact?\n";
+            cout << "Do you want to add another contact (Y/N)?\n";
             cin >> userChoice;
             // Check if user choice is valid
         }
-    } while (userChoice != 'n' || userChoice != 'N');
+    } while (userChoice == 'Y');
 }
 
 // Delete contact
@@ -169,14 +170,14 @@ void AddressBook::DeleteContact() {
         foundContact = SearchContacts();
         
         if (foundContact) {
-            if (!testRecord) {
+            if (!newRecord) {
                 //Delete Head
                 oldHead->contact.Print();
                 head = oldHead->next;
                 delete oldHead;
             } else {
-                testRecord->next = testRecord->next->next;
-                delete testRecord->next;
+                newRecord->next = newRecord->next->next;
+                delete newRecord->next;
             }
             
             cout << "Want to delete another (Y/N)? ";

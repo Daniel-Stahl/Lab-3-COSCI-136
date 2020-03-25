@@ -11,6 +11,8 @@
 using namespace std;
 
 class AddressBook {
+private:
+    Record* recordRef;
 public:
     Record* head;
     
@@ -19,5 +21,8 @@ public:
     void AddContact();
     void DeleteContact();
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);
+    Record* GetRef();
+    void SetRef(Record* newRef);
+    ~AddressBook();
 
 };

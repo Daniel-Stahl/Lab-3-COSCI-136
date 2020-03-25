@@ -6,15 +6,11 @@
 //  Copyright © 2020 Daniel Stahl. All rights reserved.
 //
 
-// Check for heap
-
 #include "AddressBook.hpp"
 #include <fstream>
 #include <iostream>
 #include <array>
 #include <new>
-
-Record* newRecord;
 
 void AddressBook::LoadData() {
     ifstream inFile;
@@ -64,6 +60,7 @@ bool AddressBook::SearchContacts() { // Let user go back to menu if accidently s
     string searchContact;
     char searchAgain;
     bool exitSearch = false;
+    Record* returnRef;
     
     do {
         cout << "Search by last name or phone number: ";
@@ -86,10 +83,12 @@ bool AddressBook::SearchContacts() { // Let user go back to menu if accidently s
         }
         
         if (node == prev) {
-            newRecord = nullptr;
+            returnRef = nullptr;
         } else {
-            newRecord = prev;
+            returnRef = prev;
         }
+        
+        SetRef(returnRef);
         
         if (node != nullptr) {
             cout << "Found contact\n";
@@ -165,14 +164,14 @@ void AddressBook::DeleteContact() {
     Record* oldHead = head;
     bool foundContact = false;
     char deleteAnother;
+    Record* newRecord;
     
     do {
         foundContact = SearchContacts();
+        newRecord = GetRef();
         
         if (foundContact) {
             if (!newRecord) {
-                //Delete Head
-                oldHead->contact.Print();
                 head = oldHead->next;
                 delete oldHead;
             } else {
@@ -205,4 +204,23 @@ void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, st
     changeStringC = arrayOfStrings[2];
     changeStringD = arrayOfStrings[3];
     changeStringE = arrayOfStrings[4];
+}
+
+Record* AddressBook::GetRef() {
+    return recordRef;
+}
+
+void AddressBook::SetRef(Record* newRef) {
+    recordRef = newRef;
+}
+
+AddressBook::~AddressBook() {
+    Record* oldHead = head;
+    Record* newHead;
+    
+    while (oldHead != NULL) {
+        newHead = oldHead->next;
+        delete oldHead;
+        oldHead = newHead;
+    }
 }

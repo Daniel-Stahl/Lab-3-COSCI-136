@@ -14,7 +14,7 @@ public:
     Address address;
     Contact();
     Contact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber);
-    void FormatPhoneNumber(string& number);
+    string FormatPhoneNumber(string number);
     string GetFirstName();
     string GetLastName();
     string GetPhoneNumber();

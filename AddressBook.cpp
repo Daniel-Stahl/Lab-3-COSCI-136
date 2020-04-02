@@ -29,8 +29,6 @@ void AddressBook::LoadData() {
     if (!inFile) {
         cout << "File doesn't exist" << endl;
         exit(1);
-    } else {
-        cout << "File loaded" << endl;
     }
     
     inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
@@ -54,56 +52,63 @@ void AddressBook::LoadData() {
             node->next = nullptr;
         }
     }
+    
+    inFile.close();
 }
 
-bool AddressBook::SearchContacts() { // Let user go back to menu if accidently selected wrong menu
+bool AddressBook::SearchContacts() {
     string searchContact;
     char searchAgain;
     bool exitSearch = false;
     Record* returnRef;
     
     do {
-        cout << "Search by last name or phone number: ";
+        cout << "Search by last name or phone number (type BACK to go back to main menu): ";
         cin >> searchContact;
         
-        // Function to make user input lowercase
+        // Function to make user input uppercase
         
-        Record *node = head;
-        Record *prev = head;
+        if (searchContact != "BACK") {
         
-        while (node != nullptr && !exitSearch) {
-            if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
-                node->contact.Print();
-                exitSearch = true;
+            Record *node = head;
+            Record *prev = head;
+            
+            while (node != nullptr && !exitSearch) {
+                if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
+                    node->contact.Print();
+                    exitSearch = true;
+                } else {
+                    prev = node;
+                    node = node->next;
+                    exitSearch = false;
+                }
+            }
+            
+            if (node == prev) {
+                returnRef = nullptr;
             } else {
-                prev = node;
-                node = node->next;
+                returnRef = prev;
+            }
+            
+            SetRef(returnRef);
+            
+            if (node != nullptr) {
+                cout << "Found contact\n";
+                cout << "Search again (Y/N)? ";
+                cin >> searchAgain;
+                cout << "\n";
+            } else {
+                cout << "Contact not found\n";
+                cout << "Search again (Y/N)? ";
+                cin >> searchAgain;
+                cout << "\n";
+            }
+            
+            searchAgain = toupper(searchAgain);
+            
+            if (searchAgain == 'Y') {
                 exitSearch = false;
             }
-        }
-        
-        if (node == prev) {
-            returnRef = nullptr;
-        } else {
-            returnRef = prev;
-        }
-        
-        SetRef(returnRef);
-        
-        if (node != nullptr) {
-            cout << "Found contact\n";
-            cout << "Search again (Y/N)? ";
-            cin >> searchAgain;
-        } else {
-            cout << "Contact not found\n";
-            cout << "Search again (Y/N)? ";
-            cin >> searchAgain;
-        }
-        
-        searchAgain = toupper(searchAgain); // Make a function
-        
-        if (searchAgain == 'Y') {
-            exitSearch = false;
         }
         
     } while (searchAgain == 'Y');
@@ -116,47 +121,54 @@ void AddressBook::AddContact() {
     char userChoice;
     string firstName, lastName, streetNumber, streetName, city, state, zipcode, phoneNumber;
     
-    do {
-        newHead = new (std::nothrow) Record;
-        
-        if (!newHead) {
-            cout << "No more space to allocate memory\n";
-        } else {
-        
-            cout << "First Name: ";
-            cin >> firstName;
+    cout << "Create contact prompt, continue? (Y/N): ";
+    cin >> userChoice;
+    cout << "\n";
+    userChoice = toupper(userChoice);
+    
+    if (userChoice != 'N') {
+        do {
+            newHead = new (std::nothrow) Record;
             
-            cout << "Last Name: ";
-            cin >> lastName;
-            
-            cout << "Street Number: ";
-            cin >> streetNumber;
-            
-            cout << "Street Name: ";
-            cin >> streetName;
-            
-            cout << "City: ";
-            cin >> city;
-            
-            cout << "State: ";
-            cin >> state;
-            
-            cout << "Zipcode: ";
-            cin >> zipcode;
-            
-            cout << "Phone Number: ";
-            cin >> phoneNumber;
-            
-            MakeUppercase(firstName, lastName, streetName, city, state);
-            newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-            newHead->next = head;
-            head = newHead;
-            
-            cout << "Do you want to add another contact (Y/N)?\n";
-            cin >> userChoice;
-            // Check if user choice is valid
-        }
-    } while (userChoice == 'Y');
+            if (!newHead) {
+                cout << "No more space to allocate memory\n";
+            } else {
+                cout << "First Name: ";
+                cin >> firstName;
+                
+                cout << "Last Name: ";
+                cin >> lastName;
+                
+                cout << "Street Number: ";
+                cin >> streetNumber;
+                
+                cout << "Street Name: ";
+                cin >> streetName;
+                
+                cout << "City: ";
+                cin >> city;
+                
+                cout << "State: ";
+                cin >> state;
+                
+                cout << "Zipcode: ";
+                cin >> zipcode;
+                
+                cout << "Phone Number: ";
+                cin >> phoneNumber;
+                
+                MakeUppercase(firstName, lastName, streetName, city, state);
+                newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+                newHead->next = head;
+                head = newHead;
+                
+                cout << "Do you want to add another contact (Y/N)?\n";
+                cin >> userChoice;
+                cout << "\n";
+                userChoice = toupper(userChoice);
+            }
+        } while (userChoice == 'Y');
+    }
 }
 
 // Delete contact
@@ -181,6 +193,8 @@ void AddressBook::DeleteContact() {
             
             cout << "Want to delete another (Y/N)? ";
             cin >> deleteAnother;
+            cout << "\n";
+            deleteAnother = toupper(deleteAnother);
         }
     } while (deleteAnother == 'Y');
 }
@@ -194,14 +208,15 @@ void AddressBook::ExportContacts() {
     if (!outFile) {
         cout << "No file exists\n";
         exit(2);
-    } else {
-        cout << "File ready!\n";
     }
     
     while (exportHead != NULL) {
-        outFile << exportHead->contact.GetFirstName() << " " << exportHead->contact.GetLastName() << "\t" << exportHead->contact.address.GetStreetNum() << " " << exportHead->contact.address.GetStreetName() << " " << exportHead->contact.address.GetCity() << ", " << exportHead->contact.address.GetState() << " " << exportHead->contact.address.GetZipcode() << "\t" << exportHead->contact.GetPhoneNumber() << endl;
+        outFile << exportHead->contact.GetFirstName() << " " << exportHead->contact.GetLastName() << "\t" << exportHead->contact.address.GetStreetNum() << " " << exportHead->contact.address.GetStreetName() << " " << exportHead->contact.address.GetCity() << ", " << exportHead->contact.address.GetState() << " " << exportHead->contact.address.GetZipcode() << "\t" << exportHead->contact.FormatPhoneNumber(exportHead->contact.GetPhoneNumber()) << endl;
         exportHead = exportHead->next;
     }
+    
+    cout << "Export complete!\n";
+    outFile.close();
 }
 
 void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) {

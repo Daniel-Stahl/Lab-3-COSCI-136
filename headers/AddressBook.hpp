@@ -20,6 +20,7 @@ public:
     bool SearchContacts();
     void AddContact();
     void DeleteContact();
+    void ExportContacts();
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);
     Record* GetRef();
     void SetRef(Record* newRef);

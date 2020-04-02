@@ -185,6 +185,25 @@ void AddressBook::DeleteContact() {
     } while (deleteAnother == 'Y');
 }
 
+void AddressBook::ExportContacts() {
+    Record* exportHead = head;
+    ofstream outFile;
+    
+    outFile.open("/Users/stahl/Desktop/Pierce College/COSCI 136/LAB_3_STAHL_DANIEL/exported_contacts.txt");
+    
+    if (!outFile) {
+        cout << "No file exists\n";
+        exit(2);
+    } else {
+        cout << "File ready!\n";
+    }
+    
+    while (exportHead != NULL) {
+        outFile << exportHead->contact.GetFirstName() << " " << exportHead->contact.GetLastName() << "\t" << exportHead->contact.address.GetStreetNum() << " " << exportHead->contact.address.GetStreetName() << " " << exportHead->contact.address.GetCity() << ", " << exportHead->contact.address.GetState() << " " << exportHead->contact.address.GetZipcode() << "\t" << exportHead->contact.GetPhoneNumber() << endl;
+        exportHead = exportHead->next;
+    }
+}
+
 void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) {
     string arrayOfStrings[5] = {changeStringA, changeStringB, changeStringC, changeStringD, changeStringE};
     int count = 0;

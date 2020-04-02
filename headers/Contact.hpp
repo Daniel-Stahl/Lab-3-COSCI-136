@@ -11,8 +11,11 @@ using namespace std;
 
 class Contact {
 public:
+    Address address;
     Contact();
     Contact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber);
+    void FormatPhoneNumber(string& number);
+    string GetFirstName();
     string GetLastName();
     string GetPhoneNumber();
     void Print();
@@ -21,6 +24,5 @@ private:
     string firstName;
     string lastName;
     string phoneNumber;
-    Address address;
     
 };

@@ -14,13 +14,21 @@ using namespace std;
 
 Contact::Contact(){};
 Contact::Contact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber) {
+    FormatPhoneNumber(newPhoneNumber);
     firstName = newFirstName; lastName = newLastName; address = newAddress; phoneNumber = newPhoneNumber;
 };
 
+string Contact::GetFirstName() { return firstName; };
 string Contact::GetLastName() { return lastName; };
 string Contact::GetPhoneNumber() { return phoneNumber; };
 
 void Contact::Print() {
-    //Address address;
-    cout << "Name: " << firstName << " " << lastName << "\n" << "Adddress: " << address.GetStreetNum() << " " << address.GetStreetName() << " " << address.GetCity() << ", " << address.GetState() << " " << address.GetZipcode() << "\n";
+    cout << "Name: " << firstName << " " << lastName << "\n" << "Adddress: " << address.GetStreetNum() << " " << address.GetStreetName() << " " << address.GetCity() << ", " << address.GetState() << " " << address.GetZipcode() << "\n" << "Phone number: " << phoneNumber << "\n";
+}
+
+void Contact::FormatPhoneNumber(string& number) {
+    number.insert(0, "(");
+    number.insert(4, ")");
+    number.insert(5, " ");
+    number.insert(9, " ");
 }

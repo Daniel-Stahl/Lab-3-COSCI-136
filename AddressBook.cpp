@@ -43,7 +43,7 @@ void AddressBook::LoadData() {
         node->next = new (std::nothrow) Record;
         
         if (!node) {
-            cout << "Cant allocate memory\n";
+            cout << "Can't allocate memory\n";
         } else {
             node = node->next;
             inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
@@ -63,11 +63,9 @@ bool AddressBook::SearchContacts() {
     Record* returnRef;
     
     do {
-        cout << "Search by last name or phone number (type BACK to go back to main menu): ";
+        cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
         cin >> searchContact;
-        
-        // Function to make user input uppercase
-        
+
         if (searchContact != "BACK") {
         
             Record *node = head;
@@ -94,21 +92,18 @@ bool AddressBook::SearchContacts() {
             
             if (node != nullptr) {
                 cout << "Found contact\n";
-                cout << "Search again (Y/N)? ";
-                cin >> searchAgain;
-                cout << "\n";
+                
             } else {
                 cout << "Contact not found\n";
-                cout << "Search again (Y/N)? ";
-                cin >> searchAgain;
-                cout << "\n";
+                
             }
+            cout << "Search again (Y/N)? ";
+            cin >> searchAgain;
+            cout << "\n";
             
             searchAgain = toupper(searchAgain);
             
-            if (searchAgain == 'Y') {
-                exitSearch = false;
-            }
+            
         }
         
     } while (searchAgain == 'Y');
@@ -191,7 +186,7 @@ void AddressBook::DeleteContact() {
                 delete newRecord->next;
             }
             
-            cout << "Want to delete another (Y/N)? ";
+            cout << "Contact deleted\n" << "Want to delete another (Y/N)? ";
             cin >> deleteAnother;
             cout << "\n";
             deleteAnother = toupper(deleteAnother);
@@ -215,7 +210,7 @@ void AddressBook::ExportContacts() {
         exportHead = exportHead->next;
     }
     
-    cout << "Export complete!\n";
+    cout << "\nExport complete!\n" << endl;
     outFile.close();
 }
 
@@ -249,6 +244,10 @@ void AddressBook::SetRef(Record* newRef) {
 }
 
 AddressBook::~AddressBook() {
+    EmptyList();
+}
+
+void AddressBook::EmptyList() {
     Record* oldHead = head;
     Record* newHead;
     

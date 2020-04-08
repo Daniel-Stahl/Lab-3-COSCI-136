@@ -14,15 +14,19 @@ using namespace std;
 
 Contact::Contact(){};
 Contact::Contact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber) {
-    firstName = newFirstName; lastName = newLastName; address = newAddress; phoneNumber = newPhoneNumber;
+    SetContact(newFirstName, newLastName, newAddress, newPhoneNumber);
 };
 
 string Contact::GetFirstName() { return firstName; };
 string Contact::GetLastName() { return lastName; };
 string Contact::GetPhoneNumber() { return phoneNumber; };
 
+void Contact::SetContact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber) {
+    firstName = newFirstName; lastName = newLastName; address = newAddress; phoneNumber = newPhoneNumber;
+};
+
 void Contact::Print() {
-    cout << "Name: " << firstName << " " << lastName << "\n" << "Adddress: " << address.GetStreetNum() << " " << address.GetStreetName() << " " << address.GetCity() << ", " << address.GetState() << " " << address.GetZipcode() << "\n" << "Phone number: " << phoneNumber << "\n";
+    cout << "Name: " << firstName << " " << lastName << "\n" << "Adddress: " << address.FormatToString() << "\n" << "Phone number: " << phoneNumber << "\n";
 }
 
 string Contact::FormatPhoneNumber(string number) {

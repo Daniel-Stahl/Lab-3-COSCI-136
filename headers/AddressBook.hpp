@@ -25,5 +25,6 @@ public:
     Record* GetRef();
     void SetRef(Record* newRef);
     ~AddressBook();
+    void EmptyList();
 
 };

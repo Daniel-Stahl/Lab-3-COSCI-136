@@ -18,6 +18,7 @@ public:
     string GetFirstName();
     string GetLastName();
     string GetPhoneNumber();
+    void SetContact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber);
     void Print();
     
 private:

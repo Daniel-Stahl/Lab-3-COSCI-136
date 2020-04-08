@@ -6,6 +6,7 @@
 //  Copyright © 2020 Daniel Stahl. All rights reserved.
 //
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -18,6 +19,8 @@ public:
     string GetCity();
     string GetState();
     string GetZipcode();
+    void SetAddress(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode);
+    string FormatToString();
 
 private:
     string streetNumber;

@@ -34,10 +34,15 @@ void AddressBook::LoadData() {
     inFile >> firstName >> lastName >> streetNumber >> streetName >> city >> state >> zipcode >> phoneNumber;
     MakeUppercase(firstName, lastName, streetName, city, state);
     
-    head = new Record;
-    head->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-    node = head;
-    head->next = nullptr;
+    head = new (std::nothrow) Record;
+    
+    if (!head) {
+        cout << "Can't allocate memory\n";
+    } else {
+        head->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+        node = head;
+        head->next = nullptr;
+    }
     
     while (!inFile.eof()) {
         node->next = new (std::nothrow) Record;
@@ -92,11 +97,10 @@ bool AddressBook::SearchContacts() {
             
             if (node != nullptr) {
                 cout << "Found contact\n";
-                
             } else {
                 cout << "Contact not found\n";
-                
             }
+            
             cout << "Search again (Y/N)? ";
             cin >> searchAgain;
             cout << "\n";

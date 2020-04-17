@@ -22,7 +22,7 @@ public:
     void DeleteContact();
     void ExportContacts();
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);
-    Record* GetRef();
+    Record* GetRef() const;
     void SetRef(Record* newRef);
     ~AddressBook();
     void EmptyList();

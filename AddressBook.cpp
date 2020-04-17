@@ -239,7 +239,7 @@ void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, st
     changeStringE = arrayOfStrings[4];
 }
 
-Record* AddressBook::GetRef() {
+Record* AddressBook::GetRef() const {
     return recordRef;
 }
 

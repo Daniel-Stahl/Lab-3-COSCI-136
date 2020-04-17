@@ -14,11 +14,11 @@ class Address {
 public:
     Address();
     Address(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode);
-    string GetStreetNum();
-    string GetStreetName();
-    string GetCity();
-    string GetState();
-    string GetZipcode();
+    string GetStreetNum() const;
+    string GetStreetName() const;
+    string GetCity() const;
+    string GetState() const;
+    string GetZipcode() const;
     void SetAddress(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode);
     string FormatToString();
 

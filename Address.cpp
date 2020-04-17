@@ -15,11 +15,11 @@ Address::Address(string newStreetNumber, string newStreetName, string newCity, s
     SetAddress(newStreetNumber, newStreetName, newCity, newState, newZipcode);
 };
 
-string Address::GetStreetNum() { return streetNumber; }
-string Address::GetStreetName() { return streetName; }
-string Address::GetCity() { return city; }
-string Address::GetState() { return state; }
-string Address::GetZipcode() { return zipcode; }
+string Address::GetStreetNum() const { return streetNumber; }
+string Address::GetStreetName() const { return streetName; }
+string Address::GetCity() const { return city; }
+string Address::GetState() const { return state; }
+string Address::GetZipcode() const { return zipcode; }
 
 void Address::SetAddress(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode) {
     streetNumber = newStreetNumber; streetName = newStreetName; city = newCity; state = newState; zipcode = newZipcode;

@@ -15,9 +15,9 @@ public:
     Contact();
     Contact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber);
     string FormatPhoneNumber(string number);
-    string GetFirstName();
-    string GetLastName();
-    string GetPhoneNumber();
+    string GetFirstName() const;
+    string GetLastName() const;
+    string GetPhoneNumber() const;
     void SetContact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber);
     void Print();
     

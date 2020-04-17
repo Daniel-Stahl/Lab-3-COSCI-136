@@ -17,9 +17,9 @@ Contact::Contact(string newFirstName, string newLastName, Address newAddress, st
     SetContact(newFirstName, newLastName, newAddress, newPhoneNumber);
 };
 
-string Contact::GetFirstName() { return firstName; };
-string Contact::GetLastName() { return lastName; };
-string Contact::GetPhoneNumber() { return phoneNumber; };
+string Contact::GetFirstName() const { return firstName; };
+string Contact::GetLastName() const { return lastName; };
+string Contact::GetPhoneNumber() const { return phoneNumber; };
 
 void Contact::SetContact(string newFirstName, string newLastName, Address newAddress, string newPhoneNumber) {
     firstName = newFirstName; lastName = newLastName; address = newAddress; phoneNumber = newPhoneNumber;

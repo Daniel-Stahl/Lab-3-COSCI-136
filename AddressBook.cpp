@@ -12,6 +12,8 @@
 #include <array>
 #include <new>
 
+Record* recordRef;
+
 void AddressBook::LoadData() {
     ifstream inFile;
     string firstName;
@@ -65,12 +67,13 @@ bool AddressBook::SearchContacts() {
     string searchContact;
     char searchAgain;
     bool exitSearch = false;
-    Record* returnRef;
     
     do {
         cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
         cin >> searchContact;
 
+        MakeSearchUpper(searchContact);
+        
         if (searchContact != "BACK") {
         
             Record *node = head;
@@ -88,12 +91,10 @@ bool AddressBook::SearchContacts() {
             }
             
             if (node == prev) {
-                returnRef = nullptr;
+                recordRef = nullptr;
             } else {
-                returnRef = prev;
+                recordRef = prev;
             }
-            
-            SetRef(returnRef);
             
             if (node != nullptr) {
                 cout << "Found contact\n";
@@ -106,8 +107,6 @@ bool AddressBook::SearchContacts() {
             cout << "\n";
             
             searchAgain = toupper(searchAgain);
-            
-            
         }
         
     } while (searchAgain == 'Y');
@@ -175,19 +174,17 @@ void AddressBook::DeleteContact() {
     Record* oldHead = head;
     bool foundContact = false;
     char deleteAnother;
-    Record* newRecord;
     
     do {
         foundContact = SearchContacts();
-        newRecord = GetRef();
         
         if (foundContact) {
-            if (!newRecord) {
+            if (!recordRef) {
                 head = oldHead->next;
                 delete oldHead;
             } else {
-                newRecord->next = newRecord->next->next;
-                delete newRecord->next;
+                recordRef->next = recordRef->next->next;
+                delete recordRef->next;
             }
             
             cout << "Contact deleted\n" << "Want to delete another (Y/N)? ";
@@ -210,13 +207,24 @@ void AddressBook::ExportContacts() {
     }
     
     while (exportHead != NULL) {
-        outFile << exportHead->contact.GetFirstName() << " " << exportHead->contact.GetLastName() << "\t" << exportHead->contact.address.GetStreetNum() << " " << exportHead->contact.address.GetStreetName() << " " << exportHead->contact.address.GetCity() << ", " << exportHead->contact.address.GetState() << " " << exportHead->contact.address.GetZipcode() << "\t" << exportHead->contact.FormatPhoneNumber(exportHead->contact.GetPhoneNumber()) << endl;
+        outFile << exportHead->contact.GetContact();
         exportHead = exportHead->next;
     }
     
     cout << "\nExport complete!\n" << endl;
     outFile.close();
 }
+
+void AddressBook::MakeSearchUpper(string& changeString) {
+    int stringSize = changeString.size();
+    int x = 0;
+    
+    while (stringSize > 0) {
+        changeString[x] = toupper(changeString[x]);
+        stringSize--;
+        x++;
+    }
+};
 
 void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE) {
     string arrayOfStrings[5] = {changeStringA, changeStringB, changeStringC, changeStringD, changeStringE};
@@ -237,14 +245,6 @@ void AddressBook::MakeUppercase(string& changeStringA, string& changeStringB, st
     changeStringC = arrayOfStrings[2];
     changeStringD = arrayOfStrings[3];
     changeStringE = arrayOfStrings[4];
-}
-
-Record* AddressBook::GetRef() const {
-    return recordRef;
-}
-
-void AddressBook::SetRef(Record* newRef) {
-    recordRef = newRef;
 }
 
 AddressBook::~AddressBook() {

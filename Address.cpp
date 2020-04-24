@@ -25,9 +25,8 @@ void Address::SetAddress(string newStreetNumber, string newStreetName, string ne
     streetNumber = newStreetNumber; streetName = newStreetName; city = newCity; state = newState; zipcode = newZipcode;
 }
 
-string Address::FormatToString() {
-    string formatToString = GetStreetNum() + " " + GetStreetName() + " " + GetCity() + ", " + GetState() + " " + GetZipcode();
-    return formatToString;
+string Address::ToString() {
+    return streetNumber + " " + streetName + " " + city + ", " + state + " " + zipcode;
 }
 
 

@@ -20,7 +20,7 @@ public:
     string GetState() const;
     string GetZipcode() const;
     void SetAddress(string newStreetNumber, string newStreetName, string newCity, string newState, string newZipcode);
-    string FormatToString();
+    string ToString();
 
 private:
     string streetNumber;

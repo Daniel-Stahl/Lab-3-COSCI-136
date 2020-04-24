@@ -6,25 +6,23 @@
 //  Copyright © 2020 Daniel Stahl. All rights reserved.
 //
 #include <string>
+//#include "Contact.hpp"
 #include "Record.hpp"
 
 using namespace std;
 
 class AddressBook {
 private:
-    Record* recordRef;
-public:
     Record* head;
-    
+
+public:
     void LoadData();
     bool SearchContacts();
     void AddContact();
     void DeleteContact();
     void ExportContacts();
+    void MakeSearchUpper(string& changeString);
     void MakeUppercase(string& changeStringA, string& changeStringB, string& changeStringC, string& changeStringD, string& changeStringE);
-    Record* GetRef() const;
-    void SetRef(Record* newRef);
     ~AddressBook();
     void EmptyList();
-
 };

@@ -8,21 +8,25 @@
 
 using namespace std;
 
-void PromptMenu();
+void MainMenu();
+void SearchContactMenu();
+void AddContactMenu();
+void DeleteContactMenu();
 
 
 int main() {
-    PromptMenu();
+    MainMenu();
 }
 
-void PromptMenu() {
+void MainMenu() {
     AddressBook addressBook;
     int userChoice;
     
     addressBook.LoadData();
     
     do {
-        cout << "Main menu: \n" << "1) Search for contact\n" << "2) Add a new contact\n" << "3) Delete contact\n" << "4) Export contacts\n" << "5) Exit program\n" << "Please select an option: ";
+        cout << "Main menu: \n"
+                "1) Search for contact\n" << "2) Add a new contact\n" << "3) Delete contact\n" << "4) Export contacts\n" << "5) Exit program\n" << "Please select an option: ";
         cin >> userChoice;
         
         if (!cin || userChoice <= 0) {
@@ -47,7 +51,11 @@ void PromptMenu() {
                     // Export to file
                     addressBook.ExportContacts();
                     break;
+                case 5:
+                    cout << "Closing program\n";
             }
         }
     } while (userChoice != 5);
 }
+
+

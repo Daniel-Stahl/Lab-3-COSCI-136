@@ -1,16 +1,4 @@
-//
-//  AddressBook.cpp
-//  LAB_3_STAHL_DANIEL
-//
-//  Created by Daniel Stahl on 3/9/20.
-//  Copyright © 2020 Daniel Stahl. All rights reserved.
-//
-
 #include "AddressBook.hpp"
-#include <fstream>
-#include <iostream>
-#include <array>
-#include <new>
 
 Record* recordRef;
 
@@ -75,7 +63,7 @@ bool AddressBook::SearchContacts() {
         MakeSearchUpper(searchContact);
         
         if (searchContact != "BACK") {
-        
+            exitSearch = false;
             Record *node = head;
             Record *prev = head;
             

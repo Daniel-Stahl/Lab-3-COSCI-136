@@ -102,6 +102,11 @@ bool AddressBook::SearchContacts() {
     return exitSearch;
 }
 
+Record* AddressBook::SearchContacts(Record*& node) {
+    return node;
+}
+
+
 void AddressBook::AddContact() {
     Record* newHead;
     char userChoice;
@@ -160,11 +165,14 @@ void AddressBook::AddContact() {
 // Delete contact
 void AddressBook::DeleteContact() {
     Record* oldHead = head;
+    Record* tempRecord;
     bool foundContact = false;
     char deleteAnother;
     
     do {
         foundContact = SearchContacts();
+        
+        tempRecord = SearchContacts(<#Record *&node#>)
         
         if (foundContact) {
             if (!recordRef) {

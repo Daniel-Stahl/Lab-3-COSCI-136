@@ -13,7 +13,7 @@ private:
 public:
     void LoadData();
     bool SearchContacts();
-    Record* SearchContacts(Record*& node);
+    Record*& SearchContacts(Record* node, bool& foundContact);
     void AddContact();
     void DeleteContact();
     void ExportContacts();

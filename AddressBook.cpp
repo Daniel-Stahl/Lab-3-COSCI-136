@@ -1,7 +1,5 @@
 #include "AddressBook.hpp"
 
-Record* recordRef;
-
 void AddressBook::LoadData() {
     ifstream inFile;
     string firstName;
@@ -77,13 +75,7 @@ bool AddressBook::SearchContacts() {
                     exitSearch = false;
                 }
             }
-            
-            if (node == prev) {
-                recordRef = nullptr;
-            } else {
-                recordRef = prev;
-            }
-            
+                        
             if (node != nullptr) {
                 cout << "Found contact\n";
             } else {
@@ -102,10 +94,53 @@ bool AddressBook::SearchContacts() {
     return exitSearch;
 }
 
-Record* AddressBook::SearchContacts(Record*& node) {
-    return node;
-}
+Record*&  AddressBook::SearchContacts(Record* node, bool& foundContact) {
+    string searchContact;
+    char searchAgain;
+    foundContact = false;
+    Record *prev = head;
+    
+    do {
+        cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
+        cin >> searchContact;
 
+        MakeSearchUpper(searchContact);
+        
+        if (searchContact != "BACK") {
+            foundContact = false;
+            
+            while (node != nullptr && !foundContact) {
+                if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
+                    node->contact.Print();
+                    foundContact = true;
+                } else {
+                    prev = node;
+                    node = node->next;
+                    foundContact = false;
+                }
+            }
+            
+            if (node != nullptr) {
+                cout << "Found contact\n";
+            } else {
+                cout << "Contact not found\n";
+            }
+            
+            cout << "Search again (Y/N)? ";
+            cin >> searchAgain;
+            cout << "\n";
+            
+            searchAgain = toupper(searchAgain);
+        }
+        
+    } while (searchAgain == 'Y');
+
+    if (node == prev) {
+        return head;
+    } else {
+        return prev;
+    }
+}
 
 void AddressBook::AddContact() {
     Record* newHead;
@@ -164,20 +199,17 @@ void AddressBook::AddContact() {
 
 // Delete contact
 void AddressBook::DeleteContact() {
-    Record* oldHead = head;
-    Record* tempRecord;
+    Record* recordRef;
     bool foundContact = false;
     char deleteAnother;
     
     do {
-        foundContact = SearchContacts();
-        
-        tempRecord = SearchContacts(<#Record *&node#>)
+        recordRef = SearchContacts(head, foundContact);
         
         if (foundContact) {
-            if (!recordRef) {
-                head = oldHead->next;
-                delete oldHead;
+            if (recordRef == head) {
+                head = recordRef->next;
+                delete recordRef;
             } else {
                 recordRef->next = recordRef->next->next;
                 delete recordRef->next;

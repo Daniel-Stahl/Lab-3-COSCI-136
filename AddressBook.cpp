@@ -94,10 +94,11 @@ bool AddressBook::SearchContacts() {
     return exitSearch;
 }
 
-Record*&  AddressBook::SearchContacts(Record* node, bool& foundContact) {
+Record*&  AddressBook::SearchContacts(Record*& nodeToDelete, bool& foundContact) {
     string searchContact;
     char searchAgain;
     foundContact = false;
+    Record* node = head;
     Record *prev = head;
     
     do {
@@ -112,7 +113,9 @@ Record*&  AddressBook::SearchContacts(Record* node, bool& foundContact) {
             while (node != nullptr && !foundContact) {
                 if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
                     node->contact.Print();
+                    nodeToDelete = node;
                     foundContact = true;
+                    return prev;
                 } else {
                     prev = node;
                     node = node->next;
@@ -134,12 +137,8 @@ Record*&  AddressBook::SearchContacts(Record* node, bool& foundContact) {
         }
         
     } while (searchAgain == 'Y');
-
-    if (node == prev) {
-        return head;
-    } else {
-        return prev;
-    }
+    
+    return head;
 }
 
 void AddressBook::AddContact() {
@@ -147,80 +146,67 @@ void AddressBook::AddContact() {
     char userChoice;
     string firstName, lastName, streetNumber, streetName, city, state, zipcode, phoneNumber;
     
-    cout << "Create contact prompt, continue? (Y/N): ";
-    cin >> userChoice;
-    cout << "\n";
-    userChoice = toupper(userChoice);
+    newHead = new (std::nothrow) Record;
     
-    if (userChoice != 'N') {
-        do {
-            newHead = new (std::nothrow) Record;
-            
-            if (!newHead) {
-                cout << "No more space to allocate memory\n";
-            } else {
-                cout << "First Name: ";
-                cin >> firstName;
-                
-                cout << "Last Name: ";
-                cin >> lastName;
-                
-                cout << "Street Number: ";
-                cin >> streetNumber;
-                
-                cout << "Street Name: ";
-                cin >> streetName;
-                
-                cout << "City: ";
-                cin >> city;
-                
-                cout << "State: ";
-                cin >> state;
-                
-                cout << "Zipcode: ";
-                cin >> zipcode;
-                
-                cout << "Phone Number: ";
-                cin >> phoneNumber;
-                
-                MakeUppercase(firstName, lastName, streetName, city, state);
-                newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
-                newHead->next = head;
-                head = newHead;
-                
-                cout << "Do you want to add another contact (Y/N)?\n";
-                cin >> userChoice;
-                cout << "\n";
-                userChoice = toupper(userChoice);
-            }
-        } while (userChoice == 'Y');
+    if (!newHead) {
+        cout << "No more space to allocate memory\n";
+    } else {
+        cout << "First Name: ";
+        cin >> firstName;
+        
+        cout << "Last Name: ";
+        cin >> lastName;
+        
+        cout << "Street Number: ";
+        cin >> streetNumber;
+        
+        cout << "Street Name: ";
+        cin >> streetName;
+        
+        cout << "City: ";
+        cin >> city;
+        
+        cout << "State: ";
+        cin >> state;
+        
+        cout << "Zipcode: ";
+        cin >> zipcode;
+        
+        cout << "Phone Number: ";
+        cin >> phoneNumber;
+        
+        MakeUppercase(firstName, lastName, streetName, city, state);
+        newHead->contact = Contact(firstName, lastName, Address(streetNumber, streetName, city, state, zipcode), phoneNumber);
+        newHead->next = head;
+        head = newHead;
+        
+        cout << "\n";
+        cout << newHead->contact.GetFirstName() << " added to contacts\n";
+        cout << "\n";
     }
 }
 
 // Delete contact
 void AddressBook::DeleteContact() {
-    Record* recordRef;
+    Record* prevNode;
+    Record* nodeToDelete;
     bool foundContact = false;
     char deleteAnother;
     
-    do {
-        recordRef = SearchContacts(head, foundContact);
-        
-        if (foundContact) {
-            if (recordRef == head) {
-                head = recordRef->next;
-                delete recordRef;
-            } else {
-                recordRef->next = recordRef->next->next;
-                delete recordRef->next;
-            }
-            
-            cout << "Contact deleted\n" << "Want to delete another (Y/N)? ";
-            cin >> deleteAnother;
-            cout << "\n";
-            deleteAnother = toupper(deleteAnother);
+    deleteAnother = 'n';
+    prevNode = SearchContacts(nodeToDelete, foundContact);
+    
+    if (foundContact) {
+        if (prevNode == nodeToDelete) {
+            head = prevNode->next;
+            delete prevNode;
+        } else {
+            prevNode->next = prevNode->next->next;
+            delete prevNode->next;
         }
-    } while (deleteAnother == 'Y');
+        
+        cout << "Contact deleted\n";
+    }
 }
 
 void AddressBook::ExportContacts() {

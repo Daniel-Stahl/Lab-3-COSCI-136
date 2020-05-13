@@ -51,92 +51,70 @@ void AddressBook::LoadData() {
 
 bool AddressBook::SearchContacts() {
     string searchContact;
-    char searchAgain;
     bool exitSearch = false;
     
-    do {
-        cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
-        cin >> searchContact;
+    cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
+    cin >> searchContact;
 
-        MakeSearchUpper(searchContact);
+    MakeSearchUpper(searchContact);
+    
+    if (searchContact != "BACK") {
+        exitSearch = false;
+        Record *node = head;
+        Record *prev = head;
         
-        if (searchContact != "BACK") {
-            exitSearch = false;
-            Record *node = head;
-            Record *prev = head;
-            
-            while (node != nullptr && !exitSearch) {
-                if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
-                    node->contact.Print();
-                    exitSearch = true;
-                } else {
-                    prev = node;
-                    node = node->next;
-                    exitSearch = false;
-                }
-            }
-                        
-            if (node != nullptr) {
-                cout << "Found contact\n";
+        while (node != nullptr && !exitSearch) {
+            if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
+                node->contact.Print();
+                exitSearch = true;
             } else {
-                cout << "Contact not found\n";
+                prev = node;
+                node = node->next;
+                exitSearch = false;
             }
-            
-            cout << "Search again (Y/N)? ";
-            cin >> searchAgain;
-            cout << "\n";
-            
-            searchAgain = toupper(searchAgain);
         }
-        
-    } while (searchAgain == 'Y');
+                    
+        if (node != nullptr) {
+            cout << "Found contact\n";
+        } else {
+            cout << "Contact not found\n";
+        }
+    }
     
     return exitSearch;
 }
 
-Record*&  AddressBook::SearchContacts(Record*& nodeToDelete, bool& foundContact) {
+Record*& AddressBook::SearchContacts(Record*& nodeToDelete, bool& foundContact) {
     string searchContact;
-    char searchAgain;
     foundContact = false;
     Record* node = head;
-    Record *prev = head;
+    Record* prev = head;
     
-    do {
-        cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
-        cin >> searchContact;
+    cout << "\nSearch by last name or phone number (type BACK to go back to main menu): ";
+    cin >> searchContact;
 
-        MakeSearchUpper(searchContact);
+    MakeSearchUpper(searchContact);
+    
+    if (searchContact != "BACK") {
+        foundContact = false;
         
-        if (searchContact != "BACK") {
-            foundContact = false;
-            
-            while (node != nullptr && !foundContact) {
-                if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
-                    node->contact.Print();
-                    nodeToDelete = node;
-                    foundContact = true;
-                    return prev;
-                } else {
-                    prev = node;
-                    node = node->next;
-                    foundContact = false;
-                }
-            }
-            
-            if (node != nullptr) {
-                cout << "Found contact\n";
+        while (node != nullptr && !foundContact) {
+            if (node->contact.GetLastName() == searchContact || node->contact.GetPhoneNumber() == searchContact) {
+                node->contact.Print();
+                nodeToDelete = node;
+                foundContact = true;
+                return prev;
             } else {
-                cout << "Contact not found\n";
+                prev = node;
+                node = node->next;
+                foundContact = false;
             }
-            
-            cout << "Search again (Y/N)? ";
-            cin >> searchAgain;
-            cout << "\n";
-            
-            searchAgain = toupper(searchAgain);
         }
         
-    } while (searchAgain == 'Y');
+        if (node == nullptr) {
+            cout << "Contact not found\n";
+        }
+    }
     
     return head;
 }
@@ -201,8 +179,8 @@ void AddressBook::DeleteContact() {
             head = prevNode->next;
             delete prevNode;
         } else {
-            prevNode->next = prevNode->next->next;
-            delete prevNode->next;
+            prevNode->next = nodeToDelete->next;
+            delete nodeToDelete;
         }
         
         cout << "Contact deleted\n";
